@@ -1,9 +1,9 @@
 # Public Release Inventory
 
-Created: 2026-05-22T11:42:22.562Z
+Created: 2026-05-22T15:48:05.734Z
 App build: 20260521-bridge-io-1
-Listed payload files: 22
-Listed payload bytes: 24497212
+Listed payload files: 23
+Listed payload bytes: 24497402
 Self-describing files not shown in the hash table: PUBLIC_RELEASE_MANIFEST.json, PUBLIC_RELEASE_INVENTORY.md
 
 ## Included
@@ -28,6 +28,7 @@ Self-describing files not shown in the hash table: PUBLIC_RELEASE_MANIFEST.json,
 | --- | ---: | --- |
 | `.nojekyll` | 0 | e3b0c44298fc |
 | `404.html` | 503 | 0f0112d01514 |
+| `google3e9d027e494c35da.html` | 54 | 9f5973459fcd |
 | `index.html` | 7204 | 46196a8f2a90 |
 | `pdf-cad/pdf-cad.css` | 14896 | eb3789d01554 |
 | `pdf-cad/pdf-cad.html` | 17508 | 29b218bd8d4a |
@@ -43,7 +44,7 @@ Self-describing files not shown in the hash table: PUBLIC_RELEASE_MANIFEST.json,
 | `pdf-cad/vendor/tesseract/tesseract.min.js` | 66695 | a8e29918d098 |
 | `pdf-cad/vendor/tesseract/tesseract.min.js.LICENSE.txt` | 372 | 11d5405010ea |
 | `pdf-cad/vendor/tesseract/worker.min.js` | 123724 | aca1229639fc |
-| `PUBLIC_DEPLOYMENT_GUIDE.md` | 1063 | 56a799ec46db |
+| `PUBLIC_DEPLOYMENT_GUIDE.md` | 1199 | 70f2dfed4568 |
 | `README.md` | 1254 | b3025d91266b |
 | `robots.txt` | 97 | 308c1e10e5d4 |
 | `sitemap.xml` | 782 | 2d830e5d2389 |

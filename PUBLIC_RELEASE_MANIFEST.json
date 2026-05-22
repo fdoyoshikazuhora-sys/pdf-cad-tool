@@ -1,12 +1,12 @@
 {
   "ok": true,
-  "createdAt": "2026-05-22T11:42:22.562Z",
+  "createdAt": "2026-05-22T15:48:05.734Z",
   "packageType": "public-static-pdf-cad",
   "appBuild": "20260521-bridge-io-1",
   "entry": "index.html",
   "app": "pdf-cad/pdf-cad.html",
-  "listedPayloadFiles": 22,
-  "listedPayloadBytes": 24497212,
+  "listedPayloadFiles": 23,
+  "listedPayloadBytes": 24497402,
   "selfDescribingFilesExcludedFromHashList": [
     "PUBLIC_RELEASE_MANIFEST.json",
     "PUBLIC_RELEASE_INVENTORY.md"
@@ -29,6 +29,11 @@
       "path": "404.html",
       "bytes": 503,
       "sha256": "0f0112d01514"
+    },
+    {
+      "path": "google3e9d027e494c35da.html",
+      "bytes": 54,
+      "sha256": "9f5973459fcd"
     },
     {
       "path": "index.html",
@@ -107,8 +112,8 @@
     },
     {
       "path": "PUBLIC_DEPLOYMENT_GUIDE.md",
-      "bytes": 1063,
-      "sha256": "56a799ec46db"
+      "bytes": 1199,
+      "sha256": "70f2dfed4568"
     },
     {
       "path": "README.md",

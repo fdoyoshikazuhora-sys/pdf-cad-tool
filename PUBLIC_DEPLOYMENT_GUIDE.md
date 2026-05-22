@@ -9,6 +9,7 @@ Upload these files and folders at the web root:
 - `index.html`
 - `404.html`
 - `.nojekyll`
+- `google3e9d027e494c35da.html`
 - `robots.txt`
 - `sitemap.xml`
 - `pdf-cad/`
@@ -23,6 +24,7 @@ Upload these files and folders at the web root:
 - Keep `.nojekyll` so static vendor files are served as normal files.
 - Use `index.html` as the public entry.
 - Upload the whole `pdf-cad/` folder without renaming it.
+- Keep `google3e9d027e494c35da.html` at the web root for Google Search Console URL-prefix verification.
 - After publishing, open the public URL and manually load a PDF.
 - Run analysis and save a DXF before announcing the URL.
 

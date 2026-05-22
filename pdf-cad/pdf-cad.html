@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PDF to CAD Tool</title>
+  <link rel="stylesheet" href="./pdf-cad.css?v=20260521-bridge-io-1">
+  <script src="./vendor/tesseract/tesseract.min.js"></script>
+</head>
+<body>
+  <main id="appShell" class="app">
+    <aside id="controlPanel" class="panel">
+      <div class="brand">
+        <span class="mark">CAD</span>
+        <div>
+          <h1>PDF to CAD Tool</h1>
+          <p>Load PDF drawings and convert lines, text, and image size to DXF.</p>
+        </div>
+      </div>
+
+      <label id="pdfDropzone" class="dropzone" for="pdfInput" tabindex="0" role="button">
+        <input id="pdfInput" type="file" accept="application/pdf">
+        <strong>Select PDF</strong>
+        <span id="fileName">No file selected</span>
+      </label>
+
+      <div class="action-stack">
+        <div class="actions">
+          <button id="renderButton" type="button" disabled>Analyze</button>
+          <button id="downloadButton" type="button" disabled>Save DXF</button>
+        </div>
+        <div class="status-strip" role="status" aria-live="polite">
+          <span>Status</span>
+          <output id="status">Select a PDF</output>
+        </div>
+        <div class="panel-tools">
+          <button id="expandGroupsButton" type="button">Expand</button>
+          <button id="collapseGroupsButton" type="button">Collapse</button>
+          <button id="resetLayoutButton" type="button">Reset Layout</button>
+        </div>
+      </div>
+
+      <section class="controls">
+        <details class="control-group" data-default-open="true" open>
+          <summary>Page & Trace</summary>
+          <div class="control-group-body">
+            <div class="row">
+              <label for="pageNumber">Page</label>
+              <input id="pageNumber" type="number" min="1" value="1">
+              <span id="pageTotal">/ 0</span>
+            </div>
+
+            <div class="page-nav">
+              <button id="previousPageButton" type="button" disabled>Previous</button>
+              <button id="nextPageButton" type="button" disabled>Next</button>
+            </div>
+
+            <div class="row">
+              <label for="dpi">Analysis DPI</label>
+              <select id="dpi">
+                <option value="144">144</option>
+                <option value="200" selected>200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label for="threshold">Black Threshold</label>
+              <input id="threshold" type="range" min="20" max="245" value="150">
+              <output id="thresholdValue">150</output>
+            </div>
+
+            <div class="row">
+              <label for="minRun">Min Line Length (px)</label>
+              <input id="minRun" type="number" min="1" max="80" value="4">
+            </div>
+
+            <label class="check-row">
+              <input id="useBasicLinetypes" type="checkbox" checked>
+              <span>Recreate dashed and center lines as DXF linetypes</span>
+            </label>
+
+            <div class="row">
+              <label for="lineTypeSensitivity">Line Type Sensitivity</label>
+              <select id="lineTypeSensitivity" title="Controls how aggressively repeated vector fragments are converted to dashed linetypes.">
+                <option value="safe">Safe</option>
+                <option value="balanced">Balanced</option>
+                <option value="firm" selected>Firm</option>
+                <option value="diagnostic">Diagnostic</option>
+              </select>
+            </div>
+
+            <div class="inline-metric">
+              <span>Mode Compare</span>
+              <output id="lineTypeModeCompareInline">-</output>
+            </div>
+
+            <label class="check-row">
+              <input id="colorPreviewByLinetype" type="checkbox" checked>
+              <span>Color preview by line type</span>
+            </label>
+
+            <div class="row">
+              <label for="lineTypePreviewFilter">Line Preview</label>
+              <select id="lineTypePreviewFilter" title="Filters only the screen preview. DXF output is unchanged.">
+                <option value="all" selected>All</option>
+                <option value="changed">Changed vs Safe</option>
+                <option value="continuous">Continuous only</option>
+                <option value="non-solid">Non-solid only</option>
+                <option value="DASHED">Dashed</option>
+                <option value="HIDDEN">Hidden</option>
+                <option value="CENTER">Center</option>
+                <option value="DOT">Dot</option>
+                <option value="DASHDOT">Dash Dot</option>
+                <option value="DIVIDE">Divide</option>
+                <option value="PHANTOM">Phantom</option>
+                <option value="BORDER">Border</option>
+              </select>
+            </div>
+
+            <label class="check-row">
+              <input id="extractVectorPaths" type="checkbox" checked>
+              <span>Prefer vector paths embedded in the PDF</span>
+            </label>
+          </div>
+        </details>
+
+        <details class="control-group" data-default-open="true" open>
+          <summary>Scale & Alignment</summary>
+          <div class="control-group-body">
+            <div class="row">
+              <label for="mmPerUnit">1 PDF pt</label>
+              <input id="mmPerUnit" type="number" min="0.001" step="0.001" value="0.352778">
+              <span>mm</span>
+            </div>
+
+            <div class="row">
+              <label for="dxfShiftXMm">Global X Shift</label>
+              <input id="dxfShiftXMm" type="number" min="-50" max="50" step="0.05" value="0">
+              <span>mm</span>
+            </div>
+
+            <div class="row">
+              <label for="dxfShiftYMm">Global Y Shift</label>
+              <input id="dxfShiftYMm" type="number" min="-50" max="50" step="0.05" value="0">
+              <span>mm</span>
+            </div>
+
+            <section class="scale-box" aria-label="Dimension Calibration">
+              <div class="scale-title">Output for Jw scale S=1/100</div>
+              <div class="row">
+                <label for="dimensionScale">Drawing Scale 1/</label>
+                <input id="dimensionScale" type="number" min="1" step="1" value="100">
+                <span>actual output</span>
+              </div>
+              <div class="row">
+                <label for="scaleChildrenX">X Dimension Values</label>
+                <input id="scaleChildrenX" type="text" inputmode="decimal" placeholder="comma-separated mm values" title="Enter child dimensions in millimeters, separated by commas or spaces.">
+                <span>mm</span>
+              </div>
+              <div class="row pick-row">
+                <label>X Dimension Points</label>
+                <output id="scaleBreaksX">-</output>
+                <button id="pickScaleBreaksX" type="button" disabled>Pick</button>
+              </div>
+              <div class="row">
+                <label for="scaleChildrenY">Y Dimension Values</label>
+                <input id="scaleChildrenY" type="text" inputmode="decimal" placeholder="comma-separated mm values" title="Enter child dimensions in millimeters, separated by commas or spaces.">
+                <span>mm</span>
+              </div>
+              <div class="row pick-row">
+                <label>Y Dimension Points</label>
+                <output id="scaleBreaksY">-</output>
+                <button id="pickScaleBreaksY" type="button" disabled>Pick</button>
+              </div>
+              <label class="check-row snap-row">
+                <input id="snapScalePick" type="checkbox" checked>
+                <span>Snap to endpoints and intersections</span>
+              </label>
+              <div class="scale-result">
+                <span id="scaleFactorX">x 1</span>
+                <span id="scaleFactorY">x 1</span>
+                <button id="resetScaleCalibration" type="button">Reset</button>
+              </div>
+            </section>
+          </div>
+        </details>
+
+        <details class="control-group" data-default-open="false">
+          <summary>Geometry</summary>
+          <div class="control-group-body">
+            <label class="check-row">
+              <input id="detectCircles" type="checkbox">
+              <span>Detect circles as DXF CIRCLE entities</span>
+            </label>
+
+            <div class="row">
+              <label for="minCircleRadius">Min Circle Radius (px)</label>
+              <input id="minCircleRadius" type="number" min="3" max="200" value="8">
+              <span>px</span>
+            </div>
+
+            <div class="row">
+              <label for="maxCircleRadius">Max Circle Radius (px)</label>
+              <input id="maxCircleRadius" type="number" min="4" max="600" value="50">
+              <span>px</span>
+            </div>
+
+            <div class="row">
+              <label for="circleSensitivity">Circle Sensitivity</label>
+              <input id="circleSensitivity" type="number" min="20" max="95" step="1" value="45">
+              <span>%</span>
+            </div>
+
+            <label class="check-row">
+              <input id="deepCircleScan" type="checkbox">
+              <span>Deep circle scan</span>
+            </label>
+          </div>
+        </details>
+
+        <details class="control-group" data-default-open="false">
+          <summary>Text & OCR</summary>
+          <div class="control-group-body">
+            <label class="check-row">
+              <input id="extractPdfText" type="checkbox" checked>
+              <span>Convert embedded PDF text to TEXT</span>
+            </label>
+
+            <label class="check-row">
+              <input id="extractOcrText" type="checkbox" title="Fill text that is drawn as image or vector paths and is missing from embedded PDF text">
+              <span>Fill missing image/vector text with OCR</span>
+            </label>
+
+            <label class="check-row">
+              <input id="splitTextChars" type="checkbox">
+              <span>Split text into characters to preserve spacing</span>
+            </label>
+
+            <label class="check-row">
+              <input id="fitTextWidth" type="checkbox" checked>
+              <span>Use DXF FIT to preserve text width</span>
+            </label>
+
+            <div class="row">
+              <label for="textHeightScale">Text Height Scale</label>
+              <input id="textHeightScale" type="number" min="0.05" max="5" step="0.05" value="0.75">
+              <span>x</span>
+            </div>
+
+            <div class="row">
+              <label for="textWidthScale">Text Width Scale</label>
+              <input id="textWidthScale" type="number" min="0.05" max="5" step="0.05" value="1">
+              <span>x</span>
+            </div>
+
+            <div class="row">
+              <label for="textShiftAlongMm">Text Along Shift</label>
+              <input id="textShiftAlongMm" type="number" min="-10" max="10" step="0.05" value="0">
+              <span>mm</span>
+            </div>
+
+            <div class="row">
+              <label for="textShiftUpMm">Text Vertical Shift</label>
+              <input id="textShiftUpMm" type="number" min="-10" max="10" step="0.05" value="0">
+              <span>mm</span>
+            </div>
+
+            <div class="row">
+              <label for="ocrLang">OCR Language</label>
+              <select id="ocrLang">
+                <option value="jpn+eng" selected>Japanese + English</option>
+                <option value="jpn">Japanese</option>
+                <option value="eng">English</option>
+              </select>
+            </div>
+
+            <div class="row">
+              <label for="ocrMinConfidence">OCR Confidence</label>
+              <input id="ocrMinConfidence" type="number" min="0" max="100" step="1" value="55">
+              <span>min</span>
+            </div>
+          </div>
+        </details>
+
+        <details class="control-group" data-default-open="false">
+          <summary>Output</summary>
+          <div class="control-group-body">
+            <div class="row">
+              <label for="layerName">Layer Name</label>
+              <input id="layerName" type="text" value="PDF_TRACE">
+            </div>
+          </div>
+        </details>
+      </section>
+
+      <details class="control-group summary-group" data-default-open="false">
+        <summary>Run Summary</summary>
+        <dl class="stats">
+          <div><dt>PDF Size</dt><dd id="pageSize">-</dd></div>
+          <div><dt>Image Size</dt><dd id="imageSize">-</dd></div>
+          <div><dt>Lines</dt><dd id="lineCount">0</dd></div>
+          <div><dt>Circles</dt><dd id="circleCount">0</dd></div>
+          <div><dt>Arcs</dt><dd id="arcCount">0</dd></div>
+          <div><dt>Ellipses</dt><dd id="ellipseCount">0</dd></div>
+          <div><dt>Splines</dt><dd id="splineCount">0</dd></div>
+          <div><dt>Text</dt><dd id="textCount">0</dd></div>
+          <div><dt>Line Type Mode</dt><dd id="lineTypeMode">Balanced</dd></div>
+          <div><dt>Line Preview</dt><dd id="lineTypePreviewMode">All</dd></div>
+          <div><dt>Mode Compare</dt><dd id="lineTypeModeCompare">-</dd></div>
+          <div><dt>Line Types</dt><dd id="lineTypeCount">-</dd></div>
+        </dl>
+      </details>
+    </aside>
+
+    <div id="panelResizeHandle" class="panel-resize-handle" role="separator" aria-label="Resize settings panel" aria-orientation="vertical" tabindex="0"></div>
+
+    <section class="workspace">
+      <div class="toolbar">
+        <div class="tool-group">
+          <button id="openPdfButtonTop" type="button">Open PDF</button>
+          <button id="renderButtonTop" type="button" disabled>Analyze</button>
+          <button id="downloadButtonTop" type="button" disabled>Save</button>
+          <button id="togglePanelButton" type="button" aria-pressed="true" aria-controls="controlPanel">Settings</button>
+          <button id="fitButton" type="button" disabled>Fit</button>
+          <button id="panModeButton" type="button" aria-pressed="false" disabled>Pan</button>
+        </div>
+        <div class="tool-group">
+          <button id="pickScaleBreaksXTop" type="button" disabled>Pick X</button>
+          <button id="pickScaleBreaksYTop" type="button" disabled>Pick Y</button>
+          <button id="clearScalePicksTop" type="button" disabled>Clear Picks</button>
+          <button id="cancelModeButtonTop" type="button" disabled>Cancel</button>
+        </div>
+        <div class="tool-group status-tool-group">
+          <output id="topStatus">Select a PDF</output>
+        </div>
+        <div class="tool-group">
+          <div class="top-page-group" aria-label="Page Navigation">
+            <button id="previousPageButtonTop" type="button" disabled>&lt;</button>
+            <output id="topPageStatus">Page - / -</output>
+            <button id="nextPageButtonTop" type="button" disabled>&gt;</button>
+          </div>
+        </div>
+        <div class="tool-group">
+          <div class="zoom-group" aria-label="Zoom">
+            <button id="zoomOutButton" type="button" disabled>-</button>
+            <output id="zoomValue">100%</output>
+            <button id="zoomInButton" type="button" disabled>+</button>
+          </div>
+          <button id="zoomResetButton" type="button" disabled>100%</button>
+        </div>
+        <div class="tool-group compare-group">
+          <button id="toggleDxfCompareButton" type="button" aria-pressed="false" disabled>Compare</button>
+          <output id="dxfCompareValue">Delta -</output>
+        </div>
+        <div class="tool-group">
+          <button id="toggleImageButton" type="button" aria-pressed="true" disabled>PDF</button>
+          <button id="toggleVectorButton" type="button" aria-pressed="true" disabled>Vectors</button>
+        </div>
+      </div>
+      <div id="viewport" class="viewport" tabindex="0" aria-label="PDF Preview">
+        <canvas id="pdfCanvas" width="0" height="0"></canvas>
+        <canvas id="vectorCanvas" width="0" height="0"></canvas>
+        <div id="emptyState" class="empty">Select a PDF to show the preview</div>
+        <div id="viewportBusy" class="busy-overlay" aria-hidden="true">
+          <div class="busy-dot"></div>
+          <output id="viewportBusyText">Working...</output>
+        </div>
+      </div>
+      <div class="viewport-statusbar" aria-label="Preview Summary">
+        <div><span>Zoom</span><output id="viewportZoomStatus">100%</output></div>
+        <div><span>Mode</span><output id="viewportModeInfo">Ready</output></div>
+        <div><span>Run</span><output id="viewportRunInfo">-</output></div>
+        <div><span>Cursor</span><output id="viewportCursorInfo">-</output></div>
+        <div><span>File</span><output id="viewportFileInfo">-</output></div>
+        <div><span>Scale</span><output id="viewportScaleInfo">S=1/100</output></div>
+        <div><span>PDF</span><output id="viewportPageInfo">-</output></div>
+        <div><span>Image</span><output id="viewportImageInfo">-</output></div>
+        <div><span>Entities</span><output id="viewportEntityInfo">0 lines / 0 curves / 0 text</output></div>
+        <div><span>Line Type</span><output id="viewportLineTypeInfo">Balanced / -</output></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="./pdf-cad.js?v=20260521-bridge-io-1" type="module"></script>
+</body>
+</html>

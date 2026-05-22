@@ -10,6 +10,7 @@ Upload these files and folders at the web root:
 - `404.html`
 - `.nojekyll`
 - `robots.txt`
+- `sitemap.xml`
 - `pdf-cad/`
 - `README.md`
 - `THIRD_PARTY_NOTICES.md`

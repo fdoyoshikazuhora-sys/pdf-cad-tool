@@ -1,25 +1,220 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PDF to CAD Tool</title>
+    <meta name="description" content="PDF図面をブラウザ上で解析し、線・文字・円・縮尺補正をDXFへ変換する静的PDF-CAD変換ツールです。">
+    <meta name="robots" content="index,follow">
+    <link rel="canonical" href="https://fdoyoshikazuhora-sys.github.io/pdf-cad-tool/">
+    <meta property="og:title" content="PDF to CAD Tool">
+    <meta property="og:description" content="PDF図面をブラウザで読み込み、DXFへ変換する静的PDF-CADツール。サンプルPDFは同梱していません。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fdoyoshikazuhora-sys.github.io/pdf-cad-tool/">
+    <meta name="twitter:card" content="summary">
     <style>
-      html, body { width: 100%; height: 100%; margin: 0; background: #101316; }
-      iframe { display: block; width: 100%; height: 100%; border: 0; background: #101316; }
-      noscript { color: #fff; font: 16px system-ui, sans-serif; padding: 24px; display: block; }
+      :root {
+        color-scheme: light;
+        --ink: #17202a;
+        --muted: #5d6978;
+        --line: #dce3ea;
+        --accent: #0f766e;
+        --accent-strong: #0b4d45;
+        --warn: #8a5a00;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, "Segoe UI", "Yu Gothic UI", "Meiryo", sans-serif;
+        color: var(--ink);
+        background: #fff;
+        line-height: 1.65;
+      }
+      header, main, footer {
+        width: min(1080px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+      header {
+        padding: 30px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 42px;
+      }
+      .brand {
+        font-size: 18px;
+        font-weight: 750;
+      }
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 16px;
+        font-size: 14px;
+      }
+      a {
+        color: var(--accent-strong);
+        text-decoration-thickness: 1px;
+        text-underline-offset: 3px;
+      }
+      h1 {
+        max-width: 820px;
+        margin: 0 0 18px;
+        font-size: clamp(34px, 7vw, 70px);
+        line-height: 1.04;
+        letter-spacing: 0;
+      }
+      .lead {
+        max-width: 780px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
+      .notice {
+        margin-top: 18px;
+        color: var(--warn);
+        font-weight: 650;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-top: 22px;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 16px;
+        border: 1px solid var(--accent);
+        border-radius: 8px;
+        color: var(--accent-strong);
+        background: #fff;
+        text-decoration: none;
+        font-weight: 700;
+      }
+      .button.primary {
+        color: #fff;
+        background: var(--accent);
+      }
+      section {
+        padding: 32px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      h2 {
+        margin: 0 0 14px;
+        font-size: 24px;
+      }
+      p { margin: 0 0 14px; }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+      .item {
+        border-left: 3px solid var(--accent);
+        padding: 2px 0 2px 14px;
+      }
+      .item h3 {
+        margin: 0 0 6px;
+        font-size: 16px;
+      }
+      .item p {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      ol {
+        margin: 0;
+        padding-left: 22px;
+      }
+      li { margin: 8px 0; }
+      code {
+        padding: 2px 5px;
+        border-radius: 4px;
+        background: #e8eef4;
+        font-family: "Cascadia Mono", "Consolas", monospace;
+      }
+      footer {
+        padding: 26px 0 40px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+      @media (max-width: 760px) {
+        nav {
+          align-items: flex-start;
+          flex-direction: column;
+          margin-bottom: 30px;
+        }
+        .links { justify-content: flex-start; }
+        .grid { grid-template-columns: 1fr; }
+      }
     </style>
   </head>
   <body>
-    <noscript>JavaScript is required to run the PDF to CAD Tool.</noscript>
-    <iframe id="pdfCadFrame" title="PDF to CAD Tool"></iframe>
-    <script>
-      const frame = document.querySelector("#pdfCadFrame");
-      const childUrl = new URL("./pdf-cad/pdf-cad.html", window.location.href);
-      for (const [key, value] of new URLSearchParams(window.location.search)) {
-        childUrl.searchParams.set(key, value);
-      }
-      frame.src = childUrl.toString();
-    </script>
+    <header>
+      <nav aria-label="Primary">
+        <div class="brand">PDF to CAD Tool</div>
+        <div class="links">
+          <a href="pdf-cad/pdf-cad.html">Open App</a>
+          <a href="README.md">README</a>
+          <a href="PUBLIC_DEPLOYMENT_GUIDE.md">Deployment Guide</a>
+          <a href="https://github.com/fdoyoshikazuhora-sys/pdf-cad-tool">GitHub</a>
+        </div>
+      </nav>
+
+      <h1>PDF図面をブラウザでDXFへ変換</h1>
+      <p class="lead">PDF図面を読み込み、線・文字・円・曲線・画像サイズを解析してDXFとして保存する静的ブラウザツールです。処理はブラウザ内で行います。</p>
+      <p class="notice">公開版にはサンプルPDFを同梱していません。利用者自身のPDFを画面から選択して使います。</p>
+      <div class="actions">
+        <a class="button primary" href="pdf-cad/pdf-cad.html">アプリを開く</a>
+        <a class="button" href="README.md">取扱説明を見る</a>
+        <a class="button" href="https://github.com/fdoyoshikazuhora-sys/pdf-cad-tool">GitHubで開く</a>
+      </div>
+    </header>
+
+    <main>
+      <section aria-labelledby="workflow">
+        <h2 id="workflow">使い方</h2>
+        <ol>
+          <li><a href="pdf-cad/pdf-cad.html">アプリ画面</a>を開く</li>
+          <li><code>Select PDF</code> からPDF図面を選ぶ</li>
+          <li><code>Analyze</code> で解析する</li>
+          <li>縮尺、線種、文字、OCR、円、レイヤー設定を必要に応じて調整する</li>
+          <li><code>Save DXF</code> でDXFを書き出す</li>
+        </ol>
+      </section>
+
+      <section aria-labelledby="features">
+        <h2 id="features">公開版の内容</h2>
+        <div class="grid">
+          <div class="item">
+            <h3>静的ホスティング対応</h3>
+            <p>GitHub Pagesなどの静的ホストに置くだけで動く構成です。</p>
+          </div>
+          <div class="item">
+            <h3>ローカル処理</h3>
+            <p>PDF解析とDXF保存はブラウザ内で行います。公開版に図面データは含めていません。</p>
+          </div>
+          <div class="item">
+            <h3>DXF出力</h3>
+            <p>文字、線、円、曲線、縮尺補正、レイヤー分けを調整してDXFを保存できます。</p>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="docs">
+        <h2 id="docs">ドキュメント</h2>
+        <p><a href="README.md">README</a> に基本的な取扱説明、<a href="THIRD_PARTY_NOTICES.md">Third-Party Notices</a> に同梱ライブラリの注意、<a href="PUBLIC_RELEASE_MANIFEST.json">Manifest</a> に公開ファイルの棚卸しを載せています。</p>
+      </section>
+    </main>
+
+    <footer>
+      <p>PDF to CAD Tool / build 20260521-bridge-io-1</p>
+    </footer>
   </body>
 </html>

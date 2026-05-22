@@ -1,12 +1,12 @@
 {
   "ok": true,
-  "createdAt": "2026-05-22T10:31:44.624Z",
+  "createdAt": "2026-05-22T11:42:22.562Z",
   "packageType": "public-static-pdf-cad",
   "appBuild": "20260521-bridge-io-1",
   "entry": "index.html",
   "app": "pdf-cad/pdf-cad.html",
-  "listedPayloadFiles": 21,
-  "listedPayloadBytes": 24490124,
+  "listedPayloadFiles": 22,
+  "listedPayloadBytes": 24497212,
   "selfDescribingFilesExcludedFromHashList": [
     "PUBLIC_RELEASE_MANIFEST.json",
     "PUBLIC_RELEASE_INVENTORY.md"
@@ -32,8 +32,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 988,
-      "sha256": "135404e787fd"
+      "bytes": 7204,
+      "sha256": "46196a8f2a90"
     },
     {
       "path": "pdf-cad/pdf-cad.css",
@@ -107,8 +107,8 @@
     },
     {
       "path": "PUBLIC_DEPLOYMENT_GUIDE.md",
-      "bytes": 1047,
-      "sha256": "1db6c9f5f565"
+      "bytes": 1063,
+      "sha256": "56a799ec46db"
     },
     {
       "path": "README.md",
@@ -117,8 +117,13 @@
     },
     {
       "path": "robots.txt",
-      "bytes": 23,
-      "sha256": "16ceb5ee3e0d"
+      "bytes": 97,
+      "sha256": "308c1e10e5d4"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 782,
+      "sha256": "2d830e5d2389"
     },
     {
       "path": "THIRD_PARTY_NOTICES.md",

@@ -1,9 +1,9 @@
 # Public Release Inventory
 
-Created: 2026-05-22T15:48:05.734Z
+Created: 2026-05-22T16:25:43.223Z
 App build: 20260521-bridge-io-1
 Listed payload files: 23
-Listed payload bytes: 24497402
+Listed payload bytes: 24497696
 Self-describing files not shown in the hash table: PUBLIC_RELEASE_MANIFEST.json, PUBLIC_RELEASE_INVENTORY.md
 
 ## Included
@@ -29,9 +29,9 @@ Self-describing files not shown in the hash table: PUBLIC_RELEASE_MANIFEST.json,
 | `.nojekyll` | 0 | e3b0c44298fc |
 | `404.html` | 503 | 0f0112d01514 |
 | `google3e9d027e494c35da.html` | 54 | 9f5973459fcd |
-| `index.html` | 7204 | 46196a8f2a90 |
+| `index.html` | 7352 | e439d840748e |
 | `pdf-cad/pdf-cad.css` | 14896 | eb3789d01554 |
-| `pdf-cad/pdf-cad.html` | 17508 | 29b218bd8d4a |
+| `pdf-cad/pdf-cad.html` | 17654 | c7f799ad93bf |
 | `pdf-cad/pdf-cad.js` | 203962 | 023ea0d830e3 |
 | `pdf-cad/vendor/pdfjs/pdf.min.mjs` | 352645 | 27fc2a057a00 |
 | `pdf-cad/vendor/pdfjs/pdf.worker.min.mjs` | 1375838 | 1baa1844c89c |

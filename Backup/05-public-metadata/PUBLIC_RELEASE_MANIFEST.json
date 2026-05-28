@@ -1,0 +1,139 @@
+{
+  "ok": true,
+  "createdAt": "2026-05-22T16:25:43.223Z",
+  "packageType": "public-static-pdf-cad",
+  "appBuild": "20260521-bridge-io-1",
+  "entry": "index.html",
+  "app": "pdf-cad/pdf-cad.html",
+  "listedPayloadFiles": 23,
+  "listedPayloadBytes": 24497696,
+  "selfDescribingFilesExcludedFromHashList": [
+    "PUBLIC_RELEASE_MANIFEST.json",
+    "PUBLIC_RELEASE_INVENTORY.md"
+  ],
+  "samplePdfBundled": false,
+  "hostWrapperBundled": false,
+  "developmentScriptsBundled": false,
+  "hostWriteMode": "none",
+  "sanitization": {
+    "internalPathReferences": false,
+    "forbiddenMatches": []
+  },
+  "fileList": [
+    {
+      "path": ".nojekyll",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc"
+    },
+    {
+      "path": "404.html",
+      "bytes": 503,
+      "sha256": "0f0112d01514"
+    },
+    {
+      "path": "google3e9d027e494c35da.html",
+      "bytes": 54,
+      "sha256": "9f5973459fcd"
+    },
+    {
+      "path": "index.html",
+      "bytes": 7352,
+      "sha256": "e439d840748e"
+    },
+    {
+      "path": "pdf-cad/pdf-cad.css",
+      "bytes": 14896,
+      "sha256": "eb3789d01554"
+    },
+    {
+      "path": "pdf-cad/pdf-cad.html",
+      "bytes": 17654,
+      "sha256": "c7f799ad93bf"
+    },
+    {
+      "path": "pdf-cad/pdf-cad.js",
+      "bytes": 203962,
+      "sha256": "023ea0d830e3"
+    },
+    {
+      "path": "pdf-cad/vendor/pdfjs/pdf.min.mjs",
+      "bytes": 352645,
+      "sha256": "27fc2a057a00"
+    },
+    {
+      "path": "pdf-cad/vendor/pdfjs/pdf.worker.min.mjs",
+      "bytes": 1375838,
+      "sha256": "1baa1844c89c"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/core/tesseract-core-lstm.wasm.js",
+      "bytes": 3938277,
+      "sha256": "8f04aa0cc81e"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/core/tesseract-core-simd-lstm.wasm.js",
+      "bytes": 3938657,
+      "sha256": "ce20eda9533c"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/core/tesseract-core-simd.wasm.js",
+      "bytes": 4735153,
+      "sha256": "63f232c4f7a9"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/core/tesseract-core.wasm.js",
+      "bytes": 4734777,
+      "sha256": "2b8c8c92b878"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/lang/eng.traineddata.gz",
+      "bytes": 2952873,
+      "sha256": "45b4cb346724"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/lang/jpn.traineddata.gz",
+      "bytes": 2030256,
+      "sha256": "2b63ebfbf148"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/tesseract.min.js",
+      "bytes": 66695,
+      "sha256": "a8e29918d098"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/tesseract.min.js.LICENSE.txt",
+      "bytes": 372,
+      "sha256": "11d5405010ea"
+    },
+    {
+      "path": "pdf-cad/vendor/tesseract/worker.min.js",
+      "bytes": 123724,
+      "sha256": "aca1229639fc"
+    },
+    {
+      "path": "PUBLIC_DEPLOYMENT_GUIDE.md",
+      "bytes": 1199,
+      "sha256": "70f2dfed4568"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1254,
+      "sha256": "b3025d91266b"
+    },
+    {
+      "path": "robots.txt",
+      "bytes": 97,
+      "sha256": "308c1e10e5d4"
+    },
+    {
+      "path": "sitemap.xml",
+      "bytes": 782,
+      "sha256": "2d830e5d2389"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.md",
+      "bytes": 676,
+      "sha256": "157aef7381ab"
+    }
+  ]
+}
